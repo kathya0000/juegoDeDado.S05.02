@@ -26,11 +26,11 @@ public class RankingDTO implements Serializable {
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("##0.00");
-        return "id: " + idPlayer +
-                " " + namePlayer +
-                " , Won= " + gamesWon +
-                " , Total=" + gamesTotal +
-                " , successRate=" + df.format(successRate * 100) + "%\n";
+        return "id: "  + idPlayer +
+                " "  + namePlayer +
+                " , Won= "  + gamesWon +
+                " , Total="  + gamesTotal +
+                " , successRate="  + df.format(successRate * 100) +  "%\n";
 
     }
 }

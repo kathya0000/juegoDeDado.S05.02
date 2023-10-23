@@ -4,23 +4,20 @@ import juegoDeDado.S052.dto.RankingDTO;
 import juegoDeDado.S052.exceptions.InvalidElementException;
 import juegoDeDado.S052.models.Player;
 import juegoDeDado.S052.service.ServiceGame;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/game/players")
+@RequiredArgsConstructor
+@RequestMapping("/api/game")
 public class GameController {
 
-    ServiceGame gameService;
+    private final ServiceGame gameService;
 
-    public GameController(ServiceGame gameService) {
-        this.gameService = gameService;
-    }
-
-    //TODO Player game
+    //Realizar un tiro de Dado
     @PostMapping("/{id}/games")
     public ResponseEntity<String> playGame(@PathVariable Long id) {
         try {
@@ -31,7 +28,7 @@ public class GameController {
         }
     }
 
-    //TODO Get all single player games
+    //Listado de Jugadas por un jugador
     @GetMapping("/{id}/games")
     public ResponseEntity<String> getAllGames(@PathVariable Long id) {
         try {
@@ -45,7 +42,7 @@ public class GameController {
         }
     }
 
-    //TODO Delete single player games
+    //Eliminar tirada del Jugador
     @DeleteMapping("/{id}/games")
     public ResponseEntity<String> deleteGames(@PathVariable Long id) {
         try {
@@ -56,7 +53,7 @@ public class GameController {
         }
     }
 
-    //TODO Returns the average ranking of all players in the system. That is, the average percentage of successes.
+    // Ranking Medio de Todos los Jugadores
     @GetMapping("/ranking")
     public ResponseEntity<String> getRankingGames() {
         try {
@@ -72,7 +69,7 @@ public class GameController {
         }
     }
 
-    //TODO Returns the player with the worst success rate.
+    //Jugador Peor Porcentaje de Exito
     @GetMapping("/ranking/loser")
     public ResponseEntity<String> getRankingLoser() {
         try {
@@ -85,7 +82,7 @@ public class GameController {
         }
     }
 
-    //TODO Returns the player with the best success rate.
+    //Jugador con Mejor Porcentaje de Exito
     @GetMapping("/ranking/winner")
     public ResponseEntity<String> getRankingWinner() {
         try {

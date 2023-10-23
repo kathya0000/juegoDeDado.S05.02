@@ -1,6 +1,6 @@
 package juegoDeDado.S052.security.auth;
 
-import juegoDeDado.S052.repository.PlayerRepository;
+
 import juegoDeDado.S052.security.config.JwtService;
 import juegoDeDado.S052.security.repository.UserRepository;
 import juegoDeDado.S052.security.user.Role;
@@ -15,10 +15,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
-    private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -37,7 +35,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse login(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

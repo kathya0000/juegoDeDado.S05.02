@@ -3,24 +3,27 @@ package juegoDeDado.S052.service;
 import juegoDeDado.S052.dto.PlayerDTO;
 import juegoDeDado.S052.exceptions.ElementAlreadyExistsException;
 import juegoDeDado.S052.exceptions.ElementNotFoundException;
+import juegoDeDado.S052.models.Game;
 import juegoDeDado.S052.models.Player;
+import juegoDeDado.S052.repository.GameRepository;
 import juegoDeDado.S052.repository.PlayerRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ServicePlayer implements PlayerService{
+
     @Autowired
     ModelMapper modelMapper;
     private final PlayerRepository playerRepository;
 
-    public ServicePlayer(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
-    }
 
     @Override
     public PlayerDTO createPlayer(PlayerDTO playerDTO) {
@@ -51,8 +54,7 @@ public class ServicePlayer implements PlayerService{
     }
 
     @Override
-    public Player getPlayerById(Long id) {
-
+    public  Player getPlayerById(Long id) {
         Optional<Player> optionalPlayer = playerRepository.findById(id);
         if (optionalPlayer.isEmpty()) throw new ElementNotFoundException(Player.class, id);
         Player player = optionalPlayer.get();
@@ -67,6 +69,15 @@ public class ServicePlayer implements PlayerService{
         else
             return false;
     }
+    public static Double calculatePlayerRanking(Long id) {
+        List<Game> games = GameRepository.findAllByPlayerId(id);
+        double totalGames = games.size();
+        double successfulGames = games.stream().filter(game -> game.getPoints() == 7).count();
+        if (totalGames == 0) return 0.0;
+        return (successfulGames / totalGames) * 100;
+    }
+
+
 
     private Player convertDtoToEntity(PlayerDTO playerDTO) {
         Player player = modelMapper.map(playerDTO, Player.class);
@@ -76,8 +87,18 @@ public class ServicePlayer implements PlayerService{
     }
 
     private PlayerDTO convertEntityToDto(Player player) {
+
         return new PlayerDTO(player.getId(), player.getName());
     }
+
+    public List<PlayerDTO> getAllPlayers() {
+        List<Player> players = playerRepository.findAll();
+        return players.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+
 
 }
 

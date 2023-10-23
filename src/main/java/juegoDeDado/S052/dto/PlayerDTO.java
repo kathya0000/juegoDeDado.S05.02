@@ -17,10 +17,4 @@ public class PlayerDTO implements Serializable {
         this.id = id;
         this.name = name;
     }
-
-    public PlayerDTO(String name) {
-
-        this.name = name;
-    }
-
 }
