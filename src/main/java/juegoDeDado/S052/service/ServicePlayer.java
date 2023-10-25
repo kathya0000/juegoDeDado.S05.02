@@ -69,15 +69,6 @@ public class ServicePlayer implements PlayerService{
         else
             return false;
     }
-    public static Double calculatePlayerRanking(Long id) {
-        List<Game> games = GameRepository.findAllByPlayerId(id);
-        double totalGames = games.size();
-        double successfulGames = games.stream().filter(game -> game.getPoints() == 7).count();
-        if (totalGames == 0) return 0.0;
-        return (successfulGames / totalGames) * 100;
-    }
-
-
 
     private Player convertDtoToEntity(PlayerDTO playerDTO) {
         Player player = modelMapper.map(playerDTO, Player.class);
